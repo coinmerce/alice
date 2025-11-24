@@ -3,7 +3,6 @@ import 'dart:async' show FutureOr, StreamSubscription;
 import 'package:alice/core/alice_storage.dart';
 import 'package:alice/core/alice_utils.dart';
 import 'package:alice/helper/alice_export_helper.dart';
-import 'package:alice/core/alice_notification.dart';
 import 'package:alice/helper/operating_system.dart';
 import 'package:alice/model/alice_configuration.dart';
 import 'package:alice/model/alice_export_result.dart';
@@ -22,9 +21,6 @@ class AliceCore {
   /// Detector used to detect device shakes
   ShakeDetector? _shakeDetector;
 
-  /// Helper used for notification management
-  AliceNotification? _notification;
-
   /// Subscription for call changes
   StreamSubscription<List<AliceHttpCall>>? _callsSubscription;
 
@@ -35,13 +31,6 @@ class AliceCore {
   AliceCore({required AliceConfiguration configuration}) {
     _configuration = configuration;
     _subscribeToCallChanges();
-    if (_configuration.showNotification) {
-      _notification = AliceNotification();
-      _notification?.configure(
-        notificationIcon: _configuration.notificationIcon,
-        openInspectorCallback: navigateToCallListScreen,
-      );
-    }
     if (_configuration.showInspectorOnShake) {
       if (OperatingSystem.isAndroid || OperatingSystem.isIOS) {
         _shakeDetector = ShakeDetector.autoStart(
@@ -70,10 +59,6 @@ class AliceCore {
   Future<void> _onCallsChanged(List<AliceHttpCall>? calls) async {
     if (calls != null && calls.isNotEmpty) {
       final AliceStats stats = _configuration.aliceStorage.getStats();
-      _notification?.showStatsNotification(
-        context: getContext()!,
-        stats: stats,
-      );
     }
   }
 
