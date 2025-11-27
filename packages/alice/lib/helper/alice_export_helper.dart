@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:share_plus/share_plus.dart';
 
 class AliceExportHelper {
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
@@ -39,12 +38,12 @@ class AliceExportHelper {
       );
     }
 
-    await SharePlus.instance.share(
-      ShareParams(
-        text: callLog,
-        subject: context.i18n(AliceTranslationKey.emailSubject),
-      ),
-    );
+    // await SharePlus.instance.share(
+    //   ShareParams(
+    //     text: callLog,
+    //     subject: context.i18n(AliceTranslationKey.emailSubject),
+    //   ),
+    // );
 
     return AliceExportResult(success: true);
   }
